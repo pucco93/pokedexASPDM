@@ -38,9 +38,7 @@ class Pokedex extends StatelessWidget {
 }
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key, required this.title}) : super(key: key);
-
-  final String title;
+  const HomePage({Key? key}) : super(key: key);
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -72,7 +70,6 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
       ),
       body: Center(
         // Center is a layout widget. It takes a single child and positions it

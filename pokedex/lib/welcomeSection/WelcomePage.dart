@@ -2,7 +2,9 @@ import 'dart:developer';
 
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:pokedex/main.dart';
 
 class WelcomePage extends StatefulWidget {
   const WelcomePage({Key? key}) : super(key: key);
@@ -55,18 +57,44 @@ class _WelcomePageState extends State<WelcomePage> {
     }
   }
 
+  void changePage(PageController pageController) {
+    pageController.nextPage(
+        duration: const Duration(milliseconds: 300), curve: Curves.easeIn);
+  }
+
+  final ButtonStyle skipStyle = ElevatedButton.styleFrom(
+      textStyle: const TextStyle(fontSize: 18),
+      padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
+      primary: Colors.grey[700],
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(Radius.circular(25.0)),
+      ));
+
   @override
   Widget build(BuildContext context) {
+    skipTutorial() {
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => HomePage()));
+    }
+
     final PageController _pageController = PageController(
       initialPage: 0,
     );
     return Scaffold(
         body: Column(children: [
+      Container(
+        alignment: Alignment.topRight,
+        padding: const EdgeInsets.only(top: 20, right: 20),
+        child: ElevatedButton(
+            style: skipStyle,
+            onPressed: skipTutorial,
+            child: const Text('Skip')),
+      ),
       Expanded(
           child: PageView(
               controller: _pageController,
               onPageChanged: (int page) => updateDirection(_pageController),
-              children: <Widget>[
+              children: const <Widget>[
             FirstPage(),
             SecondPage(),
             ThirdPage(),
@@ -83,31 +111,35 @@ class _WelcomePageState extends State<WelcomePage> {
       ),
       const Padding(padding: EdgeInsets.only(top: 30)),
       ElevatedButton(
-          style: style, onPressed: _incrementCounter, child: Text(_isNext())),
-      const Padding(padding: EdgeInsets.only(bottom: 30)),
+          style: style,
+          onPressed: () => changePage(_pageController),
+          child: Text(_isNext())),
+      const Padding(padding: EdgeInsets.only(bottom: 60)),
     ]));
   }
 }
 
 class FirstPage extends StatelessWidget {
-  FirstPage({Key? key}) : super(key: key);
+  const FirstPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Center(
-        child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: const [
-          Padding(padding: EdgeInsets.only(top: 30)),
-          Image(image: AssetImage("assets/images/poke_ball_icon.png")),
-          Padding(padding: EdgeInsets.only(top: 30)),
-          Text("A pokedex in your pocket",
-              style: TextStyle(
-                  // GoogleFonts.montserrat(),
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold)),
-        ]));
+        child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20.0),
+            child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: const [
+                  Padding(padding: EdgeInsets.only(top: 30)),
+                  Image(image: AssetImage("assets/images/poke_ball_icon.png")),
+                  Padding(padding: EdgeInsets.only(top: 30)),
+                  Text("A pokedex in your pocket",
+                      style: TextStyle(
+                          // GoogleFonts.montserrat(),
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold)),
+                ])));
   }
 }
 
@@ -116,13 +148,37 @@ class SecondPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-        child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: const [
-
-            ]));
+    return Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+        child: Column(children: [
+          Center(
+              child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                const Padding(padding: EdgeInsets.only(top: 30)),
+                Stack(
+                  children: const [
+                    Opacity(
+                      opacity: 0.3,
+                      child: Image(
+                          image:
+                              AssetImage("assets/images/poke_ball_icon.png")),
+                    ),
+                    Image(image: AssetImage("assets/images/172.png"))
+                  ],
+                ),
+              ])),
+          const Padding(padding: EdgeInsets.only(top: 30)),
+          const Text(
+            "Complete database",
+            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            textAlign: TextAlign.left,
+          ),
+          const Padding(padding: EdgeInsets.only(top: 20)),
+          const Text("You can find any Pokemon and information about it",
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.normal)),
+        ]));
   }
 }
 
@@ -131,15 +187,77 @@ class ThirdPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(color: const Color(0xFF0000FF));
+    return Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+        child: Column(children: [
+          Center(
+              child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                const Padding(padding: EdgeInsets.only(top: 30)),
+                Stack(
+                  children: const [
+                    Opacity(
+                      opacity: 0.3,
+                      child: Image(
+                          image:
+                              AssetImage("assets/images/poke_ball_icon.png")),
+                    ),
+                    Image(image: AssetImage("assets/images/25.png"))
+                  ],
+                ),
+              ])),
+          const Padding(padding: EdgeInsets.only(top: 30)),
+          const Text(
+            "Habitat location",
+            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            textAlign: TextAlign.left,
+          ),
+          const Padding(padding: EdgeInsets.only(top: 20)),
+          const Text("Lots of information about Pokèmon's favorite habitats and where you can find them",
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.normal)),
+        ]));
   }
 }
 
 class LastPage extends StatelessWidget {
   const LastPage({Key? key}) : super(key: key);
 
+  skipTutorial() {}
+
   @override
   Widget build(BuildContext context) {
-    return Container(color: const Color(0xFF000000));
+    return Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+        child: Column(children: [
+          Center(
+              child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                const Padding(padding: EdgeInsets.only(top: 30)),
+                Stack(
+                  children: const [
+                    Opacity(
+                      opacity: 0.3,
+                      child: Image(
+                          image:
+                              AssetImage("assets/images/poke_ball_icon.png")),
+                    ),
+                    Image(image: AssetImage("assets/images/26.png"))
+                  ],
+                ),
+              ])),
+          const Padding(padding: EdgeInsets.only(top: 30)),
+          const Text(
+            "Catching Pokemon",
+            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            textAlign: TextAlign.left,
+          ),
+          const Padding(padding: EdgeInsets.only(top: 20)),
+          const Text("You can sign in and set your favorite  Pokemon to find them better",
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.normal)),
+        ]));
   }
 }
